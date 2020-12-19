@@ -1,0 +1,36 @@
+curl -XPUT 'localhost:9200/persons' -H 'Content-Type:application/json' -d '{
+       "mappings": {
+            "properties": {
+                "name": {"type":"text"},
+                "age": {"type":"integer"}
+            }
+       }
+}'
+
+curl -XPOST 'localhost:9200/persons/_doc' -H 'Content-Type:application/json' -d '{
+        "name":"evgen",
+        "age": 12,
+        "sex": "male"
+}'
+
+curl -XDELETE 'localhost:9200/persons/_doc/FgaxenYBTQ2J9W5w7i17'
+
+curl -XGET 'localhost:9200/persons/_search' -H 'Content-Type:application/json' -d '{
+        "query": {
+            "bool": {
+                "filter": [ {"term": {"name": "gleb" }}]
+            }
+        }
+}'
+
+curl -XPOST 'localhost:9200/persons/_update/EgaqenYBTQ2J9W5wpS2J' -H 'Content-Type:application/json' -d '{
+        "doc": {
+            "name":"update-name"
+        }
+}'
+
+curl -XPOST 'localhost:9200/persons/_update/EgaqenYBTQ2J9W5wpS2J' -H 'Content-Type:application/json' -d '{
+        "script": {
+            "source":"ctx._source.age++"
+        }
+}'
